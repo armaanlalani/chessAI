@@ -1,6 +1,6 @@
 from chessPlayer_tree import *
 
-def genBoard():
+def genBoard(): # function used to generate the board, different values correspond to different pieces
    board = [13,11,12,15,14,12,11,13,
            10,10,10,10,10,10,10,10,
            0,0,0,0,0,0,0,0,
@@ -16,7 +16,7 @@ def printBoard(board):
       return False
    b = []
    index = 0
-   for i in board:
+   for i in board: # prints the respective piece based on the associated index
       if i == 10:
          b = b + ['wp']
       elif i == 11:
@@ -42,7 +42,7 @@ def printBoard(board):
       elif i == 25:
          b = b + ['bK']
       else:
-         if index%2 == 0 and (-1<index<8 or 15<index<24 or 31<index<40 or 47<index<56):
+         if index%2 == 0 and (-1<index<8 or 15<index<24 or 31<index<40 or 47<index<56): # prints the black and white empty squares as required
             b = b + ['#']
          elif index%2 == 0 and (7<index<16 or 23<index<32 or 39<index<48 or 55<index):
             b = b + ['_']
@@ -52,7 +52,7 @@ def printBoard(board):
             b = b + ['#']
       index += 1
    r = ''
-   for i in range(56,64,1):
+   for i in range(56,64,1): # prints the entire list that signifies the board
       if b[i] == '#' or b[i] == '_':
          r = b[i] + '  ' + r + '  '
       else:
@@ -109,7 +109,7 @@ def printBoard(board):
    print(r)
 
 
-def GetPlayerPositions(board, player):
+def GetPlayerPositions(board, player): # returns the various positions that the player's pieces are located at
    positions = []
    index = 0
    for i in board:
@@ -118,7 +118,7 @@ def GetPlayerPositions(board, player):
       index += 1
    return positions
 
-def GetPieceLegalMoves(board, position):
+def GetPieceLegalMoves(board, position): # returns the possible moves available for the piece selected
    moves = []
    if board[position] == 0:
       return False
@@ -147,7 +147,7 @@ def GetPieceLegalMoves(board, position):
    if board[position] == 25:
       return KingLegalMoves(board, position, 20)
 
-def IsPositionUnderThreat(board, position, player):
+def IsPositionUnderThreat(board, position, player): # function used to determine a piece at a certain position is under threat from the opposing player
    if player == 10:
       other = GetPlayerPositions(board,20)
       if len(other) > 0:
@@ -175,14 +175,14 @@ def IsPositionUnderThreat(board, position, player):
    return False
 
 
-def check(board, color):
+def check(board, color): # determines if the king is currently under check
    king = 0
    for i in range(0,len(board),1):
       if board[i] == color + 5:
          king = i
    return IsPositionUnderThreat(board, king, color)
 
-def checkmate(board, color):
+def checkmate(board, color): # determines if the king is under checkmate (king is unable to move out of the check position and no other piece is able to protect the king from check)
    b = list(board)
    if color == 10:
       positions = GetPlayerPositions(board, 10)
@@ -223,7 +223,7 @@ def other(color):
    if color == 20:
       return 15
 
-def KingAndKing(board, position, color):
+def KingAndKing(board, position, color): # function that determines the movement of a king relative to the possible moves of the opposing king
    otherking = 0
    otherkingmoves = []
    moves = []
@@ -275,7 +275,7 @@ def KingAndKing(board, position, color):
    return moves1
 
 
-def KingLegalMoves(board, position, color):
+def KingLegalMoves(board, position, color): # returns the legal moves available to the king at a certain position (not allowing the king to travel to a position of threat)
    moves = []
    b = list(board)
    if position + 8 < 64 and not (color <= board[position + 8] <= color + 5):
@@ -337,14 +337,14 @@ def KingLegalMoves(board, position, color):
    return moves
 
 
-def QueenLegalMoves(board, position, color):
+def QueenLegalMoves(board, position, color): # returns the moves available to the queen at a certain position
    moves = []
    rook = RookLegalMoves(board, position, color)
    bishop = BishopLegalMoves(board, position, color)
    moves = rook + bishop
    return moves
 
-def RookLegalMoves(board, position, color):
+def RookLegalMoves(board, position, color): # returns the moves available to the rook at a certain position
    moves = []
    pos = position
    if pos + 8 < 64:
@@ -392,7 +392,7 @@ def RookLegalMoves(board, position, color):
          moves = moves + [pos - 1]
    return moves
 
-def BishopLegalMoves(board, position, color):
+def BishopLegalMoves(board, position, color): # returns the moves available to the bishop at a certain position
    moves = []
    pos = position
    if pos + 9 < 64:
@@ -441,7 +441,7 @@ def BishopLegalMoves(board, position, color):
    return moves
 
 
-def KnightLegalMoves(board, position, color):
+def KnightLegalMoves(board, position, color): # returns the moves available to the knight at a certain position
    moves = []
    if color == 10:
       if position + 17 < 64:
@@ -487,7 +487,7 @@ def KnightLegalMoves(board, position, color):
                   moves = moves + [position - 6]
          return moves
 
-def PawnLegalMoves(board, position, color):
+def PawnLegalMoves(board, position, color): # returns the moves available to a pawn at a certain position
    moves = []
    if color == 10:
       if board[position + 8] == 0:
@@ -523,11 +523,11 @@ def PawnLegalMoves(board, position, color):
          moves = []
    return moves
 
-def Move(board, position1, position2):
+def Move(board, position1, position2): # moves a piece from position 1 to position 2
    board[position2] = board[position1]
    board[position1] = 0
 
-def QueenMobility(board,position1,position2,color):
+def QueenMobility(board,position1,position2,color): # returns a value corresponding to the queen's ability to move around the board
    queen = 0
    initial = 0
    final = 0
@@ -551,7 +551,7 @@ def QueenMobility(board,position1,position2,color):
       final = len(GetPieceLegalMoves(b,queen))/10
    return final-initial
 
-def RookMobility(board,position1,position2,color):
+def RookMobility(board,position1,position2,color): # returns a value corresponding to the rook's ability to move around the board
    rook1 = 0
    rook2 = 0
    isrook1 = False
@@ -589,7 +589,7 @@ def RookMobility(board,position1,position2,color):
       final = len(GetPieceLegalMoves(b,rook1) + GetPieceLegalMoves(b,rook2))/10
    return final-initial
 
-def BishopMobility(board,position1,position2,color):
+def BishopMobility(board,position1,position2,color): # returns a value corresponding to the bishop's ability to move around the board
    initial = 0
    final = 0
    bishop1 = 0
@@ -627,7 +627,7 @@ def BishopMobility(board,position1,position2,color):
       final = len(GetPieceLegalMoves(b,bishop1) + GetPieceLegalMoves(b,bishop2))/10
    return final-initial
 
-def KingProtection(board,position1,position2,color):
+def KingProtection(board,position1,position2,color): # returns a value associated with hoe well the king is protected by its surrounding pirces
    initial = 0
    final = 0
    i = 0;
@@ -714,7 +714,7 @@ def KingProtection(board,position1,position2,color):
    final = protect/available
    return final-initial
 
-def CheckValue(board, position1, position2, color):
+def CheckValue(board, position1, position2, color): # value associated with putting the other team in check
    if check(board,color) == False:
       return 0
    moves = GetPieceLegalMoves(board,position1)
@@ -725,7 +725,7 @@ def CheckValue(board, position1, position2, color):
       return 1000
    return -1000
 
-def CheckMateValue(board, position1, position2, color):
+def CheckMateValue(board, position1, position2, color): # value associated with putting the other team under check mate
    b = list(board)
    b[position2] = b[position1]
    b[position1] = 0
@@ -733,7 +733,7 @@ def CheckMateValue(board, position1, position2, color):
       return 80
    return 0
 
-def KillValue(board, position1, position2, color):
+def KillValue(board, position1, position2, color): # value associated with taking an opposing piece (also factors in sacrificing the piece selected if the opposing piece is of greater value)
    if board[position2] == 0:
       return 0
    value = 0
@@ -749,7 +749,7 @@ def KillValue(board, position1, position2, color):
          return 10*((board[position2]%10) - (board[position1]%10))
       return 5*(board[position2]%10) - (board[position1]%10)
 
-def InThreat(board, position1, position2, color):
+def InThreat(board, position1, position2, color): # determines if the given position is under threat by the opposing team
    b = list(board)
    b[position2] = b[position1]
    b[position1] = 0
@@ -761,7 +761,7 @@ def InThreat(board, position1, position2, color):
    else:
       return 0
 
-def Protect(board, position1, position2, color):
+def Protect(board, position1, position2, color): # value associated with protecting a particular piece of value
    if IsPositionUnderThreat(board,position1,color) == False:
       return 0
    b = list(board)
@@ -784,7 +784,7 @@ def other(color):
    elif color == 20:
       return 10
 
-def top5(board,color,x):
+def top5(board,color,x): # function that returns the top 5 possible moves the computer can make associated with ranking
    #x = tree([color,0])
    top5 = []
    players = GetPlayerPositions(board,color)
@@ -813,7 +813,7 @@ def top5(board,color,x):
                x.AddSuccessor(r)
    return x
 
-def genBestMoveTree(board,color,x):
+def genBestMoveTree(board,color,x): # tree structure that is used to evaluate the best possible moves at each level
    accum = x.GetSuccessors()
    for i in accum:
       b = list(board)
@@ -840,7 +840,7 @@ def genBestMoveTree(board,color,x):
                top5(b3,color,l)
    return x
 
-def chessPlayer(board,player):
+def chessPlayer(board,player): # function that utilizes the tree structure and checks multiple levels in order to determine the best possible move while factoring in future potential
    color = player
    x = tree([color,0])
    top5(board,color,x)
@@ -950,7 +950,7 @@ def chessPlayer(board,player):
       else:
          return[True,moves1[2][0:2],moves1[2],moves1]
 
-def rating(board,position1,position2,color):
+def rating(board,position1,position2,color): # overall rating system of a move relative to the current state of the board
    queenmobility = QueenMobility(board,position1,position2,color)
    rookmobility = RookMobility(board,position1,position2,color)
    bishopmobility = BishopMobility(board,position1,position2,color)
