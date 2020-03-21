@@ -1,22 +1,22 @@
 from chessPlayer import *
 
-board = genBoard()
+board = genBoard() # implements the board structure for the game
 printBoard(board)
 
-while True:
+while True: 
    pieces = GetPlayerPositions(board,10)
-   print(pieces)
+   print(pieces) #displays the pieces available to move
    legal = False
    while legal == False:
       player = int(input("WHITE: Select the piece you wish to move: "))
       for i in pieces:
          if player == i:
             legal = True
-   moves = GetPieceLegalMoves(board,player)
+   moves = GetPieceLegalMoves(board,player) # displays the moves available for the chosen piece
    moves.sort()
    print(moves)
    legal = False
-   while legal == False:
+   while legal == False: # error checking for moves that are not allowed
       move = int(input("WHITE: Select the position you wish to move to: (Enter -1 to go back)"))
       if move == -1:
          break
